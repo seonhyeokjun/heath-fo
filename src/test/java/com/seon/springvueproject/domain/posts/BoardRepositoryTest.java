@@ -11,17 +11,16 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class PostsRepositoryTest {
+public class BoardRepositoryTest {
     @Autowired
-    PostsRepository postsRepository;
+    BoardRepository boardRepository;
 
     @After
     public void cleanUp(){
-        postsRepository.deleteAll();
+        boardRepository.deleteAll();
     }
 
     @Test
@@ -30,17 +29,17 @@ public class PostsRepositoryTest {
         String title = "테스트 게시글";
         String content = "테스트 본문";
 
-        postsRepository.save(Posts.builder()
+        boardRepository.save(Board.builder()
                 .title(title)
                 .content(content)
                 .author("tjsrmatn@naver.com")
                 .build());
 
         // when
-        List<Posts> postsList = postsRepository.findAll();
+        List<Board> postsList = boardRepository.findAll();
 
         // then
-        Posts posts = postsList.get(0);
+        Board posts = postsList.get(0);
         assertThat(posts.getTitle()).isEqualTo(title);
         assertThat(posts.getContent()).isEqualTo(content);
     }
@@ -49,17 +48,17 @@ public class PostsRepositoryTest {
     public void BaseTimeEntity_등록(){
         // given
         LocalDateTime now = LocalDateTime.of(2020,8,24,0,0,0);
-        postsRepository.save(Posts.builder()
+        boardRepository.save(Board.builder()
                 .title("title")
                 .content("content")
                 .author("author")
                 .build());
 
         // when
-        List<Posts> postsList = postsRepository.findAll();
+        List<Board> postsList = boardRepository.findAll();
 
         // then
-        Posts posts = postsList.get(0);
+        Board posts = postsList.get(0);
 
         System.out.println(">>>>>>>>> createDate=" + posts.getCreatedDate() + ", modifiedDate=" + posts.getModifiedDate());
 

@@ -1,18 +1,16 @@
 package com.seon.springvueproject.web.dto;
 
-import com.seon.springvueproject.domain.posts.Posts;
+import com.seon.springvueproject.domain.posts.Board;
 import lombok.Getter;
 
-import java.util.List;
-
 @Getter
-public class PostsResponseDto {
+public class BoardResponseDto {
     private Long id;
     private String title;
     private String content;
     private String author;
 
-    public PostsResponseDto(Posts entity){
+    public BoardResponseDto(Board entity){
         this.id = entity.getId();
         this.title = entity.getTitle();
         this.content = entity.getContent();

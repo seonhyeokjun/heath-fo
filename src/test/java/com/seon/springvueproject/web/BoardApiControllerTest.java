@@ -1,11 +1,10 @@
 package com.seon.springvueproject.web;
 
-import com.seon.springvueproject.domain.posts.Posts;
-import com.seon.springvueproject.domain.posts.PostsRepository;
-import com.seon.springvueproject.web.dto.PostsSaveRequestDto;
-import com.seon.springvueproject.web.dto.PostsUpdateRequestDto;
+import com.seon.springvueproject.domain.posts.Board;
+import com.seon.springvueproject.domain.posts.BoardRepository;
+import com.seon.springvueproject.web.dto.BoardSaveRequestDto;
+import com.seon.springvueproject.web.dto.BoardUpdateRequestDto;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,18 +16,14 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class PostsApiControllerTest {
+public class BoardApiControllerTest {
     @LocalServerPort
     private int port;
 
@@ -36,7 +31,7 @@ public class PostsApiControllerTest {
     private TestRestTemplate restTemplate;
 
     @Autowired
-    private PostsRepository postsRepository;
+    private BoardRepository postsRepository;
 
     @After
     public void tearDown(){
@@ -48,7 +43,7 @@ public class PostsApiControllerTest {
         // given
         String title = "title";
         String content = "content";
-        PostsSaveRequestDto requestDto = PostsSaveRequestDto.builder()
+        BoardSaveRequestDto requestDto = BoardSaveRequestDto.builder()
                 .title(title)
                 .content(content)
                 .author("author")
@@ -63,7 +58,7 @@ public class PostsApiControllerTest {
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(responseEntity.getBody()).isGreaterThan(0L);
 
-        List<Posts> all = postsRepository.findAll();
+        List<Board> all = postsRepository.findAll();
         assertThat(all.get(0).getTitle()).isEqualTo(title);
         assertThat(all.get(0).getContent()).isEqualTo(content);
     }
@@ -71,7 +66,7 @@ public class PostsApiControllerTest {
     @Test
     public void Posts_수정된다(){
         // given
-        Posts savedPosts = postsRepository.save(Posts.builder()
+        Board savedPosts = postsRepository.save(Board.builder()
                 .title("title")
                 .content("content")
                 .author("author")
@@ -81,13 +76,13 @@ public class PostsApiControllerTest {
         String expectedTitle = "title2";
         String expectedContent = "content2";
 
-        PostsUpdateRequestDto requestDto = PostsUpdateRequestDto.builder()
+        BoardUpdateRequestDto requestDto = BoardUpdateRequestDto.builder()
                 .title(expectedTitle)
                 .content(expectedContent)
                 .build();
 
         String url = "http://localhost:" + port + "/api/v1/posts/" + updateId;
-        HttpEntity<PostsUpdateRequestDto> requestDtoHttpEntity = new HttpEntity<>(requestDto);
+        HttpEntity<BoardUpdateRequestDto> requestDtoHttpEntity = new HttpEntity<>(requestDto);
 
         // when
         ResponseEntity<Long> responseEntity = restTemplate.exchange(url, HttpMethod.PUT, requestDtoHttpEntity, Long.class);
@@ -96,8 +91,15 @@ public class PostsApiControllerTest {
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(responseEntity.getBody()).isGreaterThan(0L);
 
-        List<Posts> all = postsRepository.findAll();
+        List<Board> all = postsRepository.findAll();
         assertThat(all.get(0).getTitle()).isEqualTo(expectedTitle);
         assertThat(all.get(0).getContent()).isEqualTo(expectedContent);
+    }
+
+    @Test
+    public void Posts_불러온다(){
+        // given
+        List<Board> postsList = postsRepository.findAllDesc();
+        String url = "http://localhost:" + port + "/api/v1/posts/list";
     }
 }
