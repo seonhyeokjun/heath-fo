@@ -1,0 +1,23 @@
+package com.seon.springvueproject.config.auth;
+
+import com.seon.springvueproject.domain.user.Role;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+
+@RequiredArgsConstructor
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    private final CustomOAuth2UserService customOAuth2UserService;
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception{
+        http.csrf().disable().headers().frameOptions().disable().and().authorizeRequests()
+                .antMatchers("/", "/h2-console/**", "/api/board/list", "/api/board/{\\d+}").permitAll()
+                .antMatchers("/api/**").hasRole(Role.USER.name())
+                .anyRequest().authenticated().and()
+                .logout().logoutSuccessUrl("/").and()
+                .oauth2Login().defaultSuccessUrl("http://localhost:3000/").userInfoEndpoint().userService(customOAuth2UserService);
+    }
+}

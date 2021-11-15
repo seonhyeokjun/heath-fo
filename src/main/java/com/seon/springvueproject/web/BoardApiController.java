@@ -1,15 +1,18 @@
 package com.seon.springvueproject.web;
 
-import com.seon.springvueproject.domain.posts.Board;
-import com.seon.springvueproject.service.posts.BoardService;
+import com.seon.springvueproject.config.auth.dto.SessionUser;
+import com.seon.springvueproject.domain.board.Board;
+import com.seon.springvueproject.service.board.BoardService;
 import com.seon.springvueproject.web.dto.BoardResponseDto;
 import com.seon.springvueproject.web.dto.BoardSaveRequestDto;
 import com.seon.springvueproject.web.dto.BoardSearchDto;
 import com.seon.springvueproject.web.dto.BoardUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Slf4j
@@ -17,6 +20,7 @@ import java.util.List;
 @RestController
 public class BoardApiController {
     private final BoardService boardService;
+    private final HttpSession httpSession;
 
     /**
      * 게시물 저장
@@ -54,7 +58,8 @@ public class BoardApiController {
      * @return
      */
     @GetMapping("/api/board/list")
-    public List<Board> findAll(){
+    public Page<Board> findAll(){
+        SessionUser session = (SessionUser) httpSession.getAttribute("user");
         return boardService.findAllDesc();
     }
 
@@ -66,5 +71,16 @@ public class BoardApiController {
     @GetMapping("/api/board/search")
     public List<BoardSearchDto> search(@RequestParam(value = "keyword") String keyword){
         return boardService.searchBoard(keyword);
+    }
+
+    /**
+     * 게시물 삭제
+     * @param id
+     * @return
+     */
+    @DeleteMapping("/api/board/{id}")
+    public Long delete(@PathVariable Long id){
+        boardService.delete(id);
+        return id;
     }
 }

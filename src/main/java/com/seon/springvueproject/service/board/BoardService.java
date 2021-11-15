@@ -1,13 +1,15 @@
-package com.seon.springvueproject.service.posts;
+package com.seon.springvueproject.service.board;
 
-import com.seon.springvueproject.domain.posts.Board;
-import com.seon.springvueproject.domain.posts.BoardRepository;
+import com.seon.springvueproject.domain.board.Board;
+import com.seon.springvueproject.domain.board.BoardRepository;
 import com.seon.springvueproject.web.dto.BoardResponseDto;
 import com.seon.springvueproject.web.dto.BoardSaveRequestDto;
 import com.seon.springvueproject.web.dto.BoardSearchDto;
 import com.seon.springvueproject.web.dto.BoardUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -62,8 +64,9 @@ public class BoardService {
      * 게시물 전체 불러오기
      * @return
      */
-    public List<Board> findAllDesc(){
-        return boardRepository.findAllDesc();
+    public Page<Board> findAllDesc(){
+        int size = boardRepository.findAll().size();
+        return boardRepository.findAllDesc(PageRequest.of(0, size));
     }
 
     /**
@@ -73,25 +76,37 @@ public class BoardService {
      */
     @Transactional
     public List<BoardSearchDto> searchBoard(String keyword){
-        List<Board> postsList = boardRepository.findByTitleContaining(keyword);
+        List<Board> boardList = boardRepository.findByTitleContaining(keyword);
         List<BoardSearchDto> boardSearchDtoList = new ArrayList<>();
 
-        if (postsList.isEmpty()) return boardSearchDtoList;
+        if (boardList.isEmpty()) return boardSearchDtoList;
 
-        for (Board posts : postsList){
-            boardSearchDtoList.add(this.convertEntityToDto(posts));
+        for (Board board : boardList){
+            boardSearchDtoList.add(this.convertEntityToDto(board));
         }
 
         return boardSearchDtoList;
     }
 
-    private BoardSearchDto convertEntityToDto(Board posts) {
+    private BoardSearchDto convertEntityToDto(Board board) {
         return BoardSearchDto.builder()
-                .id(posts.getId())
-                .title(posts.getTitle())
-                .content(posts.getContent())
-                .author(posts.getAuthor())
-                .createdDate(posts.getCreatedDate())
+                .id(board.getId())
+                .title(board.getTitle())
+                .content(board.getContent())
+                .author(board.getAuthor())
+                .createdDate(board.getCreatedDate())
                 .build();
+    }
+
+    /**
+     * 게시물 삭제
+     * @param id
+     */
+    @Transactional
+    public void delete(Long id) {
+        Board board = boardRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
+
+        boardRepository.delete(board);
     }
 }

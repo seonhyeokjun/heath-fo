@@ -1,4 +1,4 @@
-package com.seon.springvueproject.domain.posts;
+package com.seon.springvueproject.domain.board;
 
 import org.junit.After;
 import org.junit.Test;

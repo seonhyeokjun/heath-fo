@@ -1,7 +1,7 @@
 package com.seon.springvueproject.web;
 
-import com.seon.springvueproject.domain.posts.Board;
-import com.seon.springvueproject.domain.posts.BoardRepository;
+import com.seon.springvueproject.domain.board.Board;
+import com.seon.springvueproject.domain.board.BoardRepository;
 import com.seon.springvueproject.web.dto.BoardSaveRequestDto;
 import com.seon.springvueproject.web.dto.BoardUpdateRequestDto;
 import org.junit.After;
@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -99,7 +101,7 @@ public class BoardApiControllerTest {
     @Test
     public void Posts_불러온다(){
         // given
-        List<Board> postsList = postsRepository.findAllDesc();
+        Page<Board> postsList = postsRepository.findAllDesc(PageRequest.of(0, 2));
         String url = "http://localhost:" + port + "/api/v1/posts/list";
     }
 }

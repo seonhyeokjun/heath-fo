@@ -1,6 +1,6 @@
 package com.seon.springvueproject.web.dto;
 
-import com.seon.springvueproject.domain.posts.Board;
+import com.seon.springvueproject.domain.board.Board;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

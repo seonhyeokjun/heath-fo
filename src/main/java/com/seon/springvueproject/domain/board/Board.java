@@ -1,10 +1,9 @@
-package com.seon.springvueproject.domain.posts;
+package com.seon.springvueproject.domain.board;
 
 import com.seon.springvueproject.domain.BaseTimeEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.http.HttpHeaders;
 
 import javax.persistence.*;
 
