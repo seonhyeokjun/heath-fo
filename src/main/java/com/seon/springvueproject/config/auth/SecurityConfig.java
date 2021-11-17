@@ -16,8 +16,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable().headers().frameOptions().disable().and().authorizeRequests()
                 .antMatchers("/", "/h2-console/**", "/api/board/list", "/api/board/{\\d+}").permitAll()
                 .antMatchers("/api/**").hasRole(Role.USER.name())
-                .anyRequest().authenticated().and()
-                .logout().logoutSuccessUrl("/").and()
-                .oauth2Login().defaultSuccessUrl("http://localhost:3000/").userInfoEndpoint().userService(customOAuth2UserService);
+                .anyRequest().authenticated()
+                .and()
+                    .logout()
+                        .logoutSuccessUrl("/")
+                .and()
+                    .oauth2Login()
+//                        .defaultSuccessUrl("http://localhost:3000/")
+                            .userInfoEndpoint()
+                                .userService(customOAuth2UserService);
     }
 }
