@@ -2,6 +2,7 @@ package com.seon.springvueproject.web;
 
 import com.seon.springvueproject.domain.board.Board;
 import com.seon.springvueproject.domain.board.BoardRepository;
+import com.seon.springvueproject.web.dto.BoardResponseDto;
 import com.seon.springvueproject.web.dto.BoardSaveRequestDto;
 import com.seon.springvueproject.web.dto.BoardUpdateRequestDto;
 import org.junit.After;
@@ -101,7 +102,7 @@ public class BoardApiControllerTest {
     @Test
     public void Posts_불러온다(){
         // given
-        Page<Board> postsList = postsRepository.findAllDesc(PageRequest.of(0, 2));
+        Page<BoardResponseDto> postsList = postsRepository.findAllDesc(PageRequest.of(0, 2));
         String url = "http://localhost:" + port + "/api/v1/posts/list";
     }
 }

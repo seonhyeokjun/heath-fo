@@ -11,8 +11,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.List;
 
 @Slf4j
@@ -20,7 +21,6 @@ import java.util.List;
 @RestController
 public class BoardApiController {
     private final BoardService boardService;
-    private final HttpSession httpSession;
 
     /**
      * 게시물 저장
@@ -28,8 +28,9 @@ public class BoardApiController {
      * @return
      */
     @PostMapping("/api/board")
-    public Long save(@RequestBody BoardSaveRequestDto boardSaveRequestDto){
-        return boardService.save(boardSaveRequestDto);
+    public Long save(@RequestPart("key") BoardSaveRequestDto boardSaveRequestDto,
+                     @RequestPart("files") List<MultipartFile> files) throws Exception {
+        return boardService.save(boardSaveRequestDto, files);
     }
 
     /**
@@ -50,6 +51,7 @@ public class BoardApiController {
      */
     @GetMapping("/api/board/{id}")
     public BoardResponseDto finById(@PathVariable Long id){
+        boardService.updateHit(id);
         return boardService.findById(id);
     }
 
@@ -58,8 +60,7 @@ public class BoardApiController {
      * @return
      */
     @GetMapping("/api/board/list")
-    public Page<Board> findAll(){
-        SessionUser session = (SessionUser) httpSession.getAttribute("user");
+    public Page<BoardResponseDto> findAll(){
         return boardService.findAllDesc();
     }
 

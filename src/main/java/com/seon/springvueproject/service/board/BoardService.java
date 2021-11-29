@@ -2,25 +2,33 @@ package com.seon.springvueproject.service.board;
 
 import com.seon.springvueproject.domain.board.Board;
 import com.seon.springvueproject.domain.board.BoardRepository;
+import com.seon.springvueproject.domain.file.FileLoad;
+import com.seon.springvueproject.service.file.FileService;
 import com.seon.springvueproject.web.dto.BoardResponseDto;
 import com.seon.springvueproject.web.dto.BoardSaveRequestDto;
 import com.seon.springvueproject.web.dto.BoardSearchDto;
 import com.seon.springvueproject.web.dto.BoardUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 @Slf4j
 @RequiredArgsConstructor
 @Service
 public class BoardService {
     private final BoardRepository boardRepository;
+    private final FileService fileService;
 
     /**
      * 게시물 저장
@@ -28,8 +36,25 @@ public class BoardService {
      * @return
      */
     @Transactional
-    public Long save(BoardSaveRequestDto boardSaveRequestDto) {
-        return boardRepository.save(boardSaveRequestDto.toEntity()).getId();
+    public Long save(BoardSaveRequestDto boardSaveRequestDto, List<MultipartFile> files) throws Exception {
+        Board board = boardSaveRequestDto.toEntity();
+        for (MultipartFile file : files){
+            if (Objects.equals(file.getOriginalFilename(), "")) continue;
+            String realFilename = file.getOriginalFilename();
+            UUID uuid = UUID.randomUUID();
+            String filename = uuid + "_" + file.getOriginalFilename();
+            String savePath = System.getProperty("user.dir") + "/src/main/resources/static/files";
+            String filePath = savePath + "/" + filename;
+            file.transferTo(new File(filePath));
+            FileLoad fileLoad = FileLoad.builder()
+                    .realFilename(realFilename)
+                    .filename(filename)
+                    .filePath(filePath)
+                    .build();
+            board.addFile(fileLoad);
+        }
+
+        return boardRepository.save(board).getId();
     }
 
     /**
@@ -64,7 +89,7 @@ public class BoardService {
      * 게시물 전체 불러오기
      * @return
      */
-    public Page<Board> findAllDesc(){
+    public Page<BoardResponseDto> findAllDesc(){
         int size = boardRepository.findAll().size();
         return boardRepository.findAllDesc(PageRequest.of(0, size));
     }
@@ -109,4 +134,15 @@ public class BoardService {
 
         boardRepository.delete(board);
     }
+
+    /**
+     * 조회수 증가
+     * @param id
+     */
+    @Transactional
+    public void updateHit(Long id) {
+        boardRepository.updateHit(id);
+    }
+
+
 }

@@ -11,12 +11,14 @@ public class BoardSaveRequestDto {
     private String title;
     private String content;
     private String author;
+    private Integer hit;
 
     @Builder
-    public BoardSaveRequestDto(String title, String content, String author){
+    public BoardSaveRequestDto(String title, String content, String author, Integer hit){
         this.title = title;
         this.content = content;
         this.author = author;
+        this.hit = hit;
     }
 
     public Board toEntity(){
@@ -24,6 +26,7 @@ public class BoardSaveRequestDto {
                 .title(title)
                 .content(content)
                 .author(author)
+                .hit(hit)
                 .build();
     }
 }

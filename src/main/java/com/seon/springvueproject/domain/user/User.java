@@ -1,11 +1,14 @@
 package com.seon.springvueproject.domain.user;
 
 import com.seon.springvueproject.domain.BaseTimeEntity;
+import com.seon.springvueproject.domain.board.Board;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -28,6 +31,13 @@ public class User extends BaseTimeEntity {
     @Column(nullable = false)
     private Role role;
 
+    @OneToMany(
+            mappedBy = "user",
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
+            orphanRemoval = true
+    )
+    private List<Board> boardList = new ArrayList<>();
+
     @Builder
     public User(String name, String email, String picture, Role role){
         this.name = name;
@@ -45,5 +55,12 @@ public class User extends BaseTimeEntity {
 
     public String getRoleKey(){
         return this.role.getKey();
+    }
+
+    public void addBoard(Board board){
+        this.boardList.add(board);
+        if (board.getUser() != this){
+            board.setUser(this);
+        }
     }
 }
