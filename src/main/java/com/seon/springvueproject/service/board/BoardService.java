@@ -46,11 +46,7 @@ public class BoardService {
             String savePath = System.getProperty("user.dir") + "/src/main/resources/static/files";
             String filePath = savePath + "/" + filename;
             file.transferTo(new File(filePath));
-            FileLoad fileLoad = FileLoad.builder()
-                    .realFilename(realFilename)
-                    .filename(filename)
-                    .filePath(filePath)
-                    .build();
+            FileLoad fileLoad = new FileLoad(realFilename, filename, filePath);
             board.addFile(fileLoad);
         }
 
