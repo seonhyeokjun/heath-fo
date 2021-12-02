@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -33,8 +35,8 @@ public class FileController {
         Resource resource = new InputStreamResource(Files.newInputStream(path));
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType("application/octet-stream"))
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileDto.getRealFilename() + "\"")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;" +
+                        " filename=\"" + URLEncoder.encode(fileDto.getRealFilename(), StandardCharsets.UTF_8) + "\"")
                 .body(resource);
     }
-
 }
