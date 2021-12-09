@@ -33,9 +33,7 @@ public class Board extends BaseTimeEntity {
 
     private Integer hit;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    private Long userId;
 
     @OneToMany(
             mappedBy = "board",
@@ -64,10 +62,7 @@ public class Board extends BaseTimeEntity {
         }
     }
 
-    public void setUser(User user){
-        this.user = user;
-        if (!user.getBoardList().contains(this)){
-            user.getBoardList().add(this);
-        }
+    public void addUser(Long id){
+        this.userId = id;
     }
 }

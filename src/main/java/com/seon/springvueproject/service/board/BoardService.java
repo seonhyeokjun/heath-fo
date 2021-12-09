@@ -1,8 +1,11 @@
 package com.seon.springvueproject.service.board;
 
+import com.seon.springvueproject.config.auth.LoginUser;
+import com.seon.springvueproject.config.auth.dto.SessionUser;
 import com.seon.springvueproject.domain.board.Board;
 import com.seon.springvueproject.domain.board.BoardRepository;
 import com.seon.springvueproject.domain.file.FileLoad;
+import com.seon.springvueproject.domain.user.User;
 import com.seon.springvueproject.service.file.FileService;
 import com.seon.springvueproject.web.dto.BoardResponseDto;
 import com.seon.springvueproject.web.dto.BoardSaveRequestDto;
@@ -35,20 +38,23 @@ public class BoardService {
      * @return
      */
     @Transactional
-    public Long save(BoardSaveRequestDto boardSaveRequestDto, List<MultipartFile> files) throws Exception {
+    public Long save(BoardSaveRequestDto boardSaveRequestDto, List<MultipartFile> files,
+                     @LoginUser SessionUser sessionUser) throws Exception {
         Board board = boardSaveRequestDto.toEntity();
-        for (MultipartFile file : files){
-            if (Objects.equals(file.getOriginalFilename(), "")) continue;
-            String realFilename = file.getOriginalFilename();
-            UUID uuid = UUID.randomUUID();
-            String filename = uuid + "_" + file.getOriginalFilename();
-            String savePath = System.getProperty("user.dir") + "/src/main/resources/static/files";
-            String filePath = savePath + "/" + filename;
-            file.transferTo(new File(filePath));
-            FileLoad fileLoad = new FileLoad(realFilename, filename, filePath);
-            board.addFile(fileLoad);
+        if (files != null){
+            for (MultipartFile file : files){
+                if (Objects.equals(file.getOriginalFilename(), "")) continue;
+                String realFilename = file.getOriginalFilename();
+                UUID uuid = UUID.randomUUID();
+                String filename = uuid + "_" + file.getOriginalFilename();
+                String savePath = System.getProperty("user.dir") + "/src/main/resources/static/files";
+                String filePath = savePath + "/" + filename;
+                file.transferTo(new File(filePath));
+                FileLoad fileLoad = new FileLoad(realFilename, filename, filePath);
+                board.addFile(fileLoad);
+            }
         }
-
+        board.addUser(sessionUser.getId());
         return boardRepository.save(board).getId();
     }
 

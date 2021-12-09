@@ -1,5 +1,6 @@
 package com.seon.springvueproject.web;
 
+import com.seon.springvueproject.config.auth.LoginUser;
 import com.seon.springvueproject.config.auth.dto.SessionUser;
 import com.seon.springvueproject.domain.board.Board;
 import com.seon.springvueproject.service.board.BoardService;
@@ -29,8 +30,9 @@ public class BoardApiController {
      */
     @PostMapping("/api/board")
     public Long save(@RequestPart("key") BoardSaveRequestDto boardSaveRequestDto,
-                     @RequestPart("files") List<MultipartFile> files) throws Exception {
-        return boardService.save(boardSaveRequestDto, files);
+                     @RequestPart(value = "files", required = false) List<MultipartFile> files,
+                     @LoginUser SessionUser sessionUser) throws Exception {
+        return boardService.save(boardSaveRequestDto, files, sessionUser);
     }
 
     /**
