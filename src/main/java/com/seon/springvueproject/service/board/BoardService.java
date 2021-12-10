@@ -5,7 +5,6 @@ import com.seon.springvueproject.config.auth.dto.SessionUser;
 import com.seon.springvueproject.domain.board.Board;
 import com.seon.springvueproject.domain.board.BoardRepository;
 import com.seon.springvueproject.domain.file.FileLoad;
-import com.seon.springvueproject.domain.user.User;
 import com.seon.springvueproject.service.file.FileService;
 import com.seon.springvueproject.web.dto.BoardResponseDto;
 import com.seon.springvueproject.web.dto.BoardSaveRequestDto;
