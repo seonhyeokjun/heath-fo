@@ -1,12 +1,10 @@
 package com.seon.springvueproject.domain.heart;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Getter
 @Entity
@@ -16,9 +14,19 @@ public class Heart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int boardNo;
+    @Column(nullable = false)
+    private Long boardId;
 
+    @Column(nullable = false)
     private Long userId;
 
-    private int linkCheck;
+    @Column(nullable = false)
+    private int likeCheck;
+
+    @Builder
+    public Heart(Long boardId, Long userId, int likeCheck){
+        this.boardId = boardId;
+        this.userId = userId;
+        this.likeCheck = likeCheck;
+    }
 }

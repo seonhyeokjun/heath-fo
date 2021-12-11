@@ -5,11 +5,10 @@ import com.seon.springvueproject.config.auth.dto.SessionUser;
 import com.seon.springvueproject.domain.board.Board;
 import com.seon.springvueproject.domain.board.BoardRepository;
 import com.seon.springvueproject.domain.file.FileLoad;
+import com.seon.springvueproject.domain.heart.Heart;
+import com.seon.springvueproject.domain.heart.HeartRepository;
 import com.seon.springvueproject.service.file.FileService;
-import com.seon.springvueproject.web.dto.BoardResponseDto;
-import com.seon.springvueproject.web.dto.BoardSaveRequestDto;
-import com.seon.springvueproject.web.dto.BoardSearchDto;
-import com.seon.springvueproject.web.dto.BoardUpdateRequestDto;
+import com.seon.springvueproject.web.dto.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -29,6 +28,7 @@ import java.util.UUID;
 @Service
 public class BoardService {
     private final BoardRepository boardRepository;
+    private final HeartRepository heartRepository;
     private final FileService fileService;
 
     /**
@@ -54,6 +54,7 @@ public class BoardService {
             }
         }
         board.addUser(sessionUser.getId());
+
         return boardRepository.save(board).getId();
     }
 
@@ -144,5 +145,30 @@ public class BoardService {
         boardRepository.updateHit(id);
     }
 
+    /**
+     * 게시물 좋아요 표시
+     * @param boardId
+     * @param sessionUser
+     * @return
+     */
+    @Transactional
+    public int likeCheck(Long boardId, SessionUser sessionUser){
+        /* 비회원일 경우 */
+        if (sessionUser == null){
+            return 0;
+        }
 
+        /* 처음 게시물을 방문했을때 */
+        if (heartRepository.findByBoardId(boardId) == null ||
+        heartRepository.findByUserId(sessionUser.getId()) == null){
+            Heart heart = Heart.builder()
+                    .boardId(boardId)
+                    .userId(sessionUser.getId())
+                    .likeCheck(0)
+                    .build();
+
+            heartRepository.save(heart);
+        }
+        return heartRepository.findByBoardIdUserId(boardId, sessionUser.getId());
+    }
 }

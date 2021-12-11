@@ -86,4 +86,16 @@ public class BoardApiController {
         boardService.delete(id);
         return id;
     }
+
+    /**
+     * 게시물 좋아요 표시
+     * @param boardId
+     * @param sessionUser
+     * @return
+     */
+    @GetMapping("/api/like/{boardId}")
+    public int likeCheck(@PathVariable("boardId") Long boardId,
+                         @LoginUser SessionUser sessionUser){
+        return boardService.likeCheck(boardId, sessionUser);
+    }
 }

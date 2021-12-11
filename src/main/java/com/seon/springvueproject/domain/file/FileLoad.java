@@ -1,6 +1,5 @@
 package com.seon.springvueproject.domain.file;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.seon.springvueproject.domain.board.Board;
 import lombok.AccessLevel;
 import lombok.Builder;
