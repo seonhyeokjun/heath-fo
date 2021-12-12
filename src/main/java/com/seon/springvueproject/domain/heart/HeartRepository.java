@@ -7,7 +7,5 @@ public interface HeartRepository extends JpaRepository<Heart, Long> {
     @Query("SELECT p.likeCheck FROM Heart p WHERE p.boardId = :boardId and p.userId = :userId")
     int findByBoardIdUserId(Long boardId, Long userId);
 
-    Heart findByBoardId(Long boardId);
-
-    Heart findByUserId(Long userId);
+    Heart findByBoardIdAndUserId(Long boardId, Long userId);
 }

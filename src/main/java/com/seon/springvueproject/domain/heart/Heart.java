@@ -29,4 +29,8 @@ public class Heart {
         this.userId = userId;
         this.likeCheck = likeCheck;
     }
+
+    public void update(int likeCheck){
+        this.likeCheck = likeCheck;
+    }
 }

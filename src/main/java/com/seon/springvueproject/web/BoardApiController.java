@@ -98,4 +98,16 @@ public class BoardApiController {
                          @LoginUser SessionUser sessionUser){
         return boardService.likeCheck(boardId, sessionUser);
     }
+
+    /**
+     * 게시물 좋아요 변화
+     * @param boardId
+     * @param sessionUser
+     * @return
+     */
+    @PutMapping("/api/like/{boardId}")
+    public int likeChange(@PathVariable("boardId") Long boardId,
+                          @LoginUser SessionUser sessionUser){
+        return boardService.likeChange(boardId, sessionUser);
+    }
 }

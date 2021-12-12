@@ -159,8 +159,7 @@ public class BoardService {
         }
 
         /* 처음 게시물을 방문했을때 */
-        if (heartRepository.findByBoardId(boardId) == null ||
-        heartRepository.findByUserId(sessionUser.getId()) == null){
+        if (heartRepository.findByBoardIdAndUserId(boardId, sessionUser.getId()) == null){
             Heart heart = Heart.builder()
                     .boardId(boardId)
                     .userId(sessionUser.getId())
@@ -170,5 +169,25 @@ public class BoardService {
             heartRepository.save(heart);
         }
         return heartRepository.findByBoardIdUserId(boardId, sessionUser.getId());
+    }
+
+    /**
+     * 게시물 좋아요 변화
+     * @param boardId
+     * @param sessionUser
+     * @return
+     */
+    @Transactional
+    public int likeChange(Long boardId, SessionUser sessionUser) {
+        Heart heart = heartRepository.findByBoardIdAndUserId(boardId, sessionUser.getId());
+
+        /* 좋아요 표시 X */
+        if (heart.getLikeCheck() == 0){
+            heart.update(1);
+        } else if (heart.getLikeCheck() == 1){ /* 좋아요 표시 O */
+            heart.update(0);
+        }
+
+        return heart.getLikeCheck();
     }
 }
