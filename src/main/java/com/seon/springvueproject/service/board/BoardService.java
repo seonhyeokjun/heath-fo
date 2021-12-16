@@ -38,7 +38,7 @@ public class BoardService {
      */
     @Transactional
     public Long save(BoardSaveRequestDto boardSaveRequestDto, List<MultipartFile> files,
-                     @LoginUser SessionUser sessionUser) throws Exception {
+                     SessionUser sessionUser) throws Exception {
         Board board = boardSaveRequestDto.toEntity();
         if (files != null){
             for (MultipartFile file : files){
