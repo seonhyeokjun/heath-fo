@@ -3,6 +3,7 @@ package com.seon.springvueproject.web;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.seon.springvueproject.config.WebConfig;
+import com.seon.springvueproject.config.auth.LoginUser;
 import com.seon.springvueproject.config.auth.dto.SessionUser;
 import com.seon.springvueproject.domain.board.Board;
 import com.seon.springvueproject.domain.board.BoardRepository;
@@ -11,6 +12,7 @@ import com.seon.springvueproject.domain.user.User;
 import com.seon.springvueproject.web.dto.BoardResponseDto;
 import com.seon.springvueproject.web.dto.BoardSaveRequestDto;
 import com.seon.springvueproject.web.dto.BoardUpdateRequestDto;
+import org.hibernate.Session;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,11 +41,14 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import javax.servlet.http.Part;
 import java.io.File;
 import java.io.FileInputStream;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Locale;
@@ -83,8 +88,17 @@ public class BoardApiControllerTest {
                 .apply(springSecurity())
                 .build();
 
+        User user = User.builder()
+                .name("test")
+                .email("test@test.com")
+                .picture("test")
+                .role(Role.USER)
+                .build();
+
+        SessionUser sessionUser = new SessionUser(user);
+
         session = new MockHttpSession();
-        session.setAttribute("name", "테스트");
+        session.setAttribute("user", sessionUser);
     }
 
     @After
@@ -107,12 +121,6 @@ public class BoardApiControllerTest {
 
         String url = "http://localhost:" + port + "/api/board";
 
-        //when
-//        mvc.perform(post(url).contentType(MediaType.APPLICATION_JSON_UTF8)
-//                        .content(new ObjectMapper().writeValueAsString(requestDto)))
-//                .andExpect(status().isOk());
-//     "{\"title\":\"title\", \"author\":\"author\", \"content\":\"content\", \"hit\":0}"
-
         MockMultipartFile firstFile = new MockMultipartFile("files", "_i_icon_10247_icon_102470_256.png", "text/plain", new FileInputStream("/Users/seonhyeogjun/springVueProject/src/main/resources/static/files/a8de20c3-d967-4471-85cd-20307473c2b0__i_icon_10247_icon_102470_256.png"));
         MockMultipartFile secondFile = new MockMultipartFile("files", "_i_icon_16008_icon_160080_256.png", "text/plain", new FileInputStream("/Users/seonhyeogjun/springVueProject/src/main/resources/static/files/75785461-ed0c-4323-9b63-532f0d5cc22e__i_icon_16008_icon_160080_256.png"));
         String contents = objectMapper.writeValueAsString(requestDto);
@@ -120,7 +128,7 @@ public class BoardApiControllerTest {
                 new MockMultipartFile("key", "", "application/json", contents.getBytes(StandardCharsets.UTF_8));
 
         mvc.perform(multipart(url)
-                .file(mockMultipartFile).file(firstFile).file(secondFile)
+                .file(mockMultipartFile).file(firstFile).file(secondFile).session(session)
                 .accept(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8"))
                 .andDo(print())
@@ -159,8 +167,8 @@ public class BoardApiControllerTest {
 
         // then
         List<Board> all = boardRepository.findAll();
-        assertThat(all.get(0).getTitle()).isEqualTo(expectedTitle);
-        assertThat(all.get(0).getContent()).isEqualTo(expectedContent);
+        assertThat(all.get(1).getTitle()).isEqualTo(expectedTitle);
+        assertThat(all.get(1).getContent()).isEqualTo(expectedContent);
     }
 
     @Test
