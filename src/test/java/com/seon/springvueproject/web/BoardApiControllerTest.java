@@ -1,9 +1,6 @@
 package com.seon.springvueproject.web;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.seon.springvueproject.config.WebConfig;
-import com.seon.springvueproject.config.auth.LoginUser;
 import com.seon.springvueproject.config.auth.dto.SessionUser;
 import com.seon.springvueproject.domain.board.Board;
 import com.seon.springvueproject.domain.board.BoardRepository;
@@ -12,46 +9,28 @@ import com.seon.springvueproject.domain.user.User;
 import com.seon.springvueproject.web.dto.BoardResponseDto;
 import com.seon.springvueproject.web.dto.BoardSaveRequestDto;
 import com.seon.springvueproject.web.dto.BoardUpdateRequestDto;
-import org.hibernate.Session;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.mock.web.MockPart;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
-import javax.servlet.http.Part;
-import java.io.File;
 import java.io.FileInputStream;
-import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
@@ -121,11 +100,20 @@ public class BoardApiControllerTest {
 
         String url = "http://localhost:" + port + "/api/board";
 
-        MockMultipartFile firstFile = new MockMultipartFile("files", "_i_icon_10247_icon_102470_256.png", "text/plain", new FileInputStream("/Users/seonhyeogjun/springVueProject/src/main/resources/static/files/a8de20c3-d967-4471-85cd-20307473c2b0__i_icon_10247_icon_102470_256.png"));
-        MockMultipartFile secondFile = new MockMultipartFile("files", "_i_icon_16008_icon_160080_256.png", "text/plain", new FileInputStream("/Users/seonhyeogjun/springVueProject/src/main/resources/static/files/75785461-ed0c-4323-9b63-532f0d5cc22e__i_icon_16008_icon_160080_256.png"));
+        // when
+        MockMultipartFile firstFile = new MockMultipartFile("files",
+                "_i_icon_10247_icon_102470_256.png",
+                "text/plain",
+                new FileInputStream("/Users/seonhyeogjun/springVueProject/src/main/resources/static/files/a8de20c3-d967-4471-85cd-20307473c2b0__i_icon_10247_icon_102470_256.png"));
+        MockMultipartFile secondFile = new MockMultipartFile("files",
+                "_i_icon_16008_icon_160080_256.png",
+                "text/plain",
+                new FileInputStream("/Users/seonhyeogjun/springVueProject/src/main/resources/static/files/75785461-ed0c-4323-9b63-532f0d5cc22e__i_icon_16008_icon_160080_256.png"));
+
         String contents = objectMapper.writeValueAsString(requestDto);
         MockMultipartFile mockMultipartFile =
-                new MockMultipartFile("key", "", "application/json", contents.getBytes(StandardCharsets.UTF_8));
+                new MockMultipartFile("key", "jsondata",
+                        "application/json", contents.getBytes(StandardCharsets.UTF_8));
 
         mvc.perform(multipart(url)
                 .file(mockMultipartFile).file(firstFile).file(secondFile).session(session)
@@ -134,6 +122,7 @@ public class BoardApiControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk());
 
+        // then
         List<Board> all = boardRepository.findAll();
         assertThat(all.get(0).getTitle()).isEqualTo(title);
         assertThat(all.get(0).getContent()).isEqualTo(content);
@@ -167,14 +156,16 @@ public class BoardApiControllerTest {
 
         // then
         List<Board> all = boardRepository.findAll();
-        assertThat(all.get(1).getTitle()).isEqualTo(expectedTitle);
-        assertThat(all.get(1).getContent()).isEqualTo(expectedContent);
+        assertThat(all.get(0).getTitle()).isEqualTo(expectedTitle);
+        assertThat(all.get(0).getContent()).isEqualTo(expectedContent);
     }
 
     @Test
-    public void Posts_불러온다(){
+    public void board_불러온다(){
         // given
         Page<BoardResponseDto> postsList = boardRepository.findAllDesc(PageRequest.of(0, 2));
-        String url = "http://localhost:" + port + "/api/v1/posts/list";
+        String url = "http://localhost:" + port + "/api/board/list";
+
+
     }
 }
