@@ -17,7 +17,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable().headers().frameOptions().disable().and().authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/api/board/{\\d+}").permitAll()
                 .antMatchers("/", "/h2-console/**", "/api/board/list", "/auth/client",
-                        "/api/like/**", "/api/file/**").permitAll()
+                        "/api/like/**", "/api/file/**", "/ws/chat").permitAll()
                 .antMatchers("/api/**").hasRole(Role.USER.name())
                 .anyRequest().authenticated()
                 .and()
