@@ -9,10 +9,10 @@ import com.seon.springvueproject.domain.user.User;
 import com.seon.springvueproject.web.dto.BoardResponseDto;
 import com.seon.springvueproject.web.dto.BoardSaveRequestDto;
 import com.seon.springvueproject.web.dto.BoardUpdateRequestDto;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -23,7 +23,7 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -38,7 +38,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class BoardApiControllerTest {
     @LocalServerPort
@@ -60,7 +60,7 @@ public class BoardApiControllerTest {
 
     private MockMvc mvc;
 
-    @Before
+    @BeforeEach
     public void setup() {
         mvc = MockMvcBuilders
                 .webAppContextSetup(context)
@@ -80,7 +80,7 @@ public class BoardApiControllerTest {
         session.setAttribute("user", sessionUser);
     }
 
-    @After
+    @AfterEach
     public void tearDown(){
         session.clearAttributes();
     }
@@ -104,11 +104,11 @@ public class BoardApiControllerTest {
         MockMultipartFile firstFile = new MockMultipartFile("files",
                 "_i_icon_10247_icon_102470_256.png",
                 "text/plain",
-                new FileInputStream("/Users/seonhyeogjun/springVueProject/src/main/resources/static/files/a8de20c3-d967-4471-85cd-20307473c2b0__i_icon_10247_icon_102470_256.png"));
+                new FileInputStream("/Users/seonhyeogjun/springVueProject/src/main/resources/static/files/0c2658b8-3fe1-439c-9884-6773e50f4b2f__i_icon_10247_icon_102470_256.png"));
         MockMultipartFile secondFile = new MockMultipartFile("files",
                 "_i_icon_16008_icon_160080_256.png",
                 "text/plain",
-                new FileInputStream("/Users/seonhyeogjun/springVueProject/src/main/resources/static/files/75785461-ed0c-4323-9b63-532f0d5cc22e__i_icon_16008_icon_160080_256.png"));
+                new FileInputStream("/Users/seonhyeogjun/springVueProject/src/main/resources/static/files/0c2658b8-3fe1-439c-9884-6773e50f4b2f__i_icon_10247_icon_102470_256.png"));
 
         String contents = objectMapper.writeValueAsString(requestDto);
         MockMultipartFile mockMultipartFile =
