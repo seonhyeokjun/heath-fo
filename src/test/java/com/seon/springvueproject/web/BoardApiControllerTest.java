@@ -40,7 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class BoardApiControllerTest {
+class BoardApiControllerTest {
     @LocalServerPort
     private int port;
 
@@ -87,7 +87,7 @@ public class BoardApiControllerTest {
 
     @Test
     @WithMockUser(roles="USER")
-    public void Board_등록된다() throws Exception {
+    void Board_등록된다() throws Exception {
         // given
         String title = "title";
         String content = "content";
@@ -130,14 +130,14 @@ public class BoardApiControllerTest {
 
     @Test
     @WithMockUser(roles="USER")
-    public void Board_수정된다() throws Exception{
+    void Board_수정된다() throws Exception{
         // given
-        Board savedPosts = boardRepository.save(Board.builder()
+        Board savedBoard = boardRepository.save(Board.builder()
                 .title("title")
                 .content("content")
                 .build());
 
-        Long updateId = savedPosts.getId();
+        long updateId = savedBoard.getId();
         String expectedTitle = "title2";
         String expectedContent = "content2";
 
@@ -161,11 +161,25 @@ public class BoardApiControllerTest {
     }
 
     @Test
-    public void board_불러온다(){
+    void board_불러온다(){
         // given
         Page<BoardResponseDto> postsList = boardRepository.findAllDesc(PageRequest.of(0, 2));
         String url = "http://localhost:" + port + "/api/board/list";
 
+
+    }
+
+    @Test
+    void board_삭제(){
+        //given
+        Board savedBoard = boardRepository.save(Board.builder()
+                .title("title")
+                .content("content")
+                .build());
+
+        long deleteId = savedBoard.getId();
+
+        // when
 
     }
 }
