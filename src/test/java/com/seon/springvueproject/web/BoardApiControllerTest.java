@@ -161,16 +161,19 @@ class BoardApiControllerTest {
     }
 
     @Test
-    void board_불러온다(){
+    @WithMockUser(roles = "USER")
+    void board_불러온다() throws Exception {
         // given
-        Page<BoardResponseDto> postsList = boardRepository.findAllDesc(PageRequest.of(0, 2));
-        String url = "http://localhost:" + port + "/api/board/list";
+        Page<BoardResponseDto> boardList = boardRepository.findAllDesc(PageRequest.of(0, 2));
+        String url = "http://localhost:" + port + "/api/board/";
 
-
+        // when
+        mvc.perform(get(url)).andDo(print()).andExpect(status().isOk());
     }
 
     @Test
-    void board_삭제한다(){
+    @WithMockUser(roles="USER")
+    void board_삭제한다() throws Exception {
         //given
         Board savedBoard = boardRepository.save(Board.builder()
                 .title("title")
@@ -179,7 +182,13 @@ class BoardApiControllerTest {
 
         long deleteId = savedBoard.getId();
 
-        // when
+        String url = "http://localhost:" + port + "/api/board/" + deleteId;
 
+        // when
+        mvc.perform(delete(url)).andDo(print()).andExpect(status().isOk());
+
+        // then
+        List<Board> all = boardRepository.findAll();
+        assertThat(all).isEmpty();
     }
 }
