@@ -2,13 +2,13 @@ package com.seon.springvueproject.web;
 
 import com.seon.springvueproject.domain.messge.MsgRoom;
 import com.seon.springvueproject.service.Message.MsgService;
+import com.seon.springvueproject.web.dto.MsgRoomDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/chat")
 public class ChatRoomController {
@@ -34,11 +34,11 @@ public class ChatRoomController {
 
     /**
      * 채팅방 생성
-     * @param name
+     * @param msgRoomDto
      * @return
      */
     @PostMapping("/room")
-    public MsgRoom createRoom(@RequestParam String name){
-        return msgService.createRoom(name);
+    public Long createRoom(@RequestBody MsgRoomDto msgRoomDto){
+        return msgService.createRoom(msgRoomDto);
     }
 }

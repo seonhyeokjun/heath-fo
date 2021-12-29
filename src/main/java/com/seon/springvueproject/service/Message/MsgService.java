@@ -2,6 +2,7 @@ package com.seon.springvueproject.service.Message;
 
 import com.seon.springvueproject.domain.messge.MsgRoom;
 import com.seon.springvueproject.domain.messge.MsgRoomRepository;
+import com.seon.springvueproject.web.dto.MsgRoomDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -34,12 +35,12 @@ public class MsgService {
 
     /**
      * 채티방 생성
-     * @param name
+     * @param msgRoomDto
      * @return
      */
-    public MsgRoom createRoom(String name){
+    public Long createRoom(MsgRoomDto msgRoomDto){
         return msgRoomRepository.save(MsgRoom.builder()
-                .roomId(name)
-                .build());
+                .roomName(msgRoomDto.getRoomName())
+                .build()).getId();
     }
 }

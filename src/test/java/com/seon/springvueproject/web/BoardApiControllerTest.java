@@ -150,7 +150,7 @@ class BoardApiControllerTest {
 
         //when
         mvc.perform(put(url)
-                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(requestDto))).andDo(print())
                 .andExpect(status().isOk());
 
@@ -170,7 +170,7 @@ class BoardApiControllerTest {
     }
 
     @Test
-    void board_삭제(){
+    void board_삭제한다(){
         //given
         Board savedBoard = boardRepository.save(Board.builder()
                 .title("title")

@@ -18,7 +18,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/api/board/{\\d+}").permitAll()
                 .antMatchers("/", "/h2-console/**", "/api/board/list", "/auth/client",
                         "/api/like/**", "/api/file/**", "/ws/chat", "/chat").permitAll()
-                .antMatchers("/api/**").hasRole(Role.USER.name())
+                .antMatchers("/api/**", "/chat/**").hasRole(Role.USER.name())
                 .anyRequest().authenticated()
                 .and()
                     .logout()
