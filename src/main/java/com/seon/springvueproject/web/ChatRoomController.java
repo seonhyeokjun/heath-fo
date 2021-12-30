@@ -41,4 +41,13 @@ public class ChatRoomController {
     public Long createRoom(@RequestBody MsgRoomDto msgRoomDto){
         return msgService.createRoom(msgRoomDto);
     }
+
+    /**
+     * 채팅방 삭제
+     * @param id
+     */
+    @DeleteMapping("/room")
+    public void deleteRoom(Long id){
+        msgService.deleteRoom(id);
+    }
 }
