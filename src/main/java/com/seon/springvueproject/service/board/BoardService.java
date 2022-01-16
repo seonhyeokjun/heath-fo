@@ -1,6 +1,5 @@
 package com.seon.springvueproject.service.board;
 
-import com.seon.springvueproject.config.auth.LoginUser;
 import com.seon.springvueproject.config.auth.dto.SessionUser;
 import com.seon.springvueproject.domain.board.Board;
 import com.seon.springvueproject.domain.board.BoardRepository;
@@ -79,6 +78,7 @@ public class BoardService {
      * @param id
      * @return
      */
+    @Transactional(readOnly = true)
     public BoardResponseDto findById(Long id) {
         Board entity = boardRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
@@ -90,6 +90,7 @@ public class BoardService {
      * 게시물 전체 불러오기
      * @return
      */
+    @Transactional(readOnly = true)
     public Page<BoardResponseDto> findAllDesc(){
         int size = boardRepository.findAll().size();
         if (size == 0) size = 1;
@@ -101,7 +102,7 @@ public class BoardService {
      * @param keyword
      * @return
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public List<BoardSearchDto> searchBoard(String keyword){
         List<Board> boardList = boardRepository.findByTitleContaining(keyword);
         List<BoardSearchDto> boardSearchDtoList = new ArrayList<>();

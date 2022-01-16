@@ -10,11 +10,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
-    show-sql: true
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
+        show-sql: true
   security:
     oauth2:
       client:
@@ -25,4 +21,6 @@ spring:
             scope: profile,email
 logging:
   level:
-    org.hibernate.type: trace
+    org.hibernate:
+      SQL: debug
+      type: trace
