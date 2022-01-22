@@ -108,11 +108,11 @@ class BoardApiControllerTest {
         MockMultipartFile firstFile = new MockMultipartFile("files",
                 "_i_icon_10247_icon_102470_256.png",
                 "text/plain",
-                new FileInputStream("/home/ec2-user/app/spring/springVueProject/src/main/resources/static/files/6acea158-6ba9-41a0-8b52-ac535e88883e_구직활동 확인서(2021-10-26_2021-11-25) (1).pdf"));
+                new FileInputStream(System.getProperty("user.dir")+"/src/main/resources/static/files/6acea158-6ba9-41a0-8b52-ac535e88883e_구직활동 확인서(2021-10-26_2021-11-25) (1).pdf"));
         MockMultipartFile secondFile = new MockMultipartFile("files",
                 "_i_icon_16008_icon_160080_256.png",
                 "text/plain",
-                new FileInputStream("/home/ec2-user/app/spring/springVueProject/src/main/resources/static/files/a58ca201-1626-4023-81e7-f95863e5a80f_구직활동 확인서(2021-10-26_2021-11-25).pdf"));
+                new FileInputStream(System.getProperty("user.dir")+"/src/main/resources/static/files/a58ca201-1626-4023-81e7-f95863e5a80f_구직활동 확인서(2021-10-26_2021-11-25).pdf"));
 
         String contents = objectMapper.writeValueAsString(requestDto);
         MockMultipartFile mockMultipartFile =
