@@ -11,6 +11,7 @@ import com.seon.springvueproject.web.dto.BoardSaveRequestDto;
 import com.seon.springvueproject.web.dto.BoardUpdateRequestDto;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,6 +89,7 @@ class BoardApiControllerTest {
     }
 
     @Test
+    @DisplayName("게시판글이 등록된다")
     @WithMockUser(roles="USER")
     void Board_등록된다() throws Exception {
         // given
@@ -106,11 +108,11 @@ class BoardApiControllerTest {
         MockMultipartFile firstFile = new MockMultipartFile("files",
                 "_i_icon_10247_icon_102470_256.png",
                 "text/plain",
-                new FileInputStream("/Users/seonhyeogjun/springVueProject/src/main/resources/static/files/6acea158-6ba9-41a0-8b52-ac535e88883e_구직활동 확인서(2021-10-26_2021-11-25) (1).pdf"));
+                new FileInputStream("/home/ec2-user/app/spring/springVueProject/src/main/resources/static/files/6acea158-6ba9-41a0-8b52-ac535e88883e_구직활동 확인서(2021-10-26_2021-11-25) (1).pdf"));
         MockMultipartFile secondFile = new MockMultipartFile("files",
                 "_i_icon_16008_icon_160080_256.png",
                 "text/plain",
-                new FileInputStream("/Users/seonhyeogjun/springVueProject/src/main/resources/static/files/a58ca201-1626-4023-81e7-f95863e5a80f_구직활동 확인서(2021-10-26_2021-11-25).pdf"));
+                new FileInputStream("/home/ec2-user/app/spring/springVueProject/src/main/resources/static/files/a58ca201-1626-4023-81e7-f95863e5a80f_구직활동 확인서(2021-10-26_2021-11-25).pdf"));
 
         String contents = objectMapper.writeValueAsString(requestDto);
         MockMultipartFile mockMultipartFile =
