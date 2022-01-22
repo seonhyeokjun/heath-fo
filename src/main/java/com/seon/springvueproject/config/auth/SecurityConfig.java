@@ -16,8 +16,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception{
         http.csrf().disable().headers().frameOptions().disable().and().authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/api/board/{\\d+}").permitAll()
-                .antMatchers("/", "/h2-console/**", "/api/board/list", "/auth/client",
-                        "/api/like/**", "/api/file/**", "/ws/chat", "/chat/rooms", "/google", "/naver").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/board").permitAll()
+                .antMatchers("/", "/h2-console/**", "/auth/client", "/api/like/**", "/api/file/**",
+                        "/ws/chat", "/chat/rooms", "/api/google", "/api/naver").permitAll()
                 .antMatchers("/api/**", "/chat/**").hasRole(Role.USER.name())
                 .anyRequest().authenticated()
                 .and()
