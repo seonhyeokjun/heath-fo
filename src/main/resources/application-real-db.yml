@@ -1,9 +1,0 @@
-spring:
-  jpa:
-    hibernate:
-      ddl-auto: none
-  datasource:
-    url: jdbc:mysql://spring-react.cl9yfmogg61e.ap-northeast-2.rds.amazonaws.com:3306/springReact?serverTimezone=Asia/Seoul
-    username: root
-    password: Trlsrjs4ajrwk!
-    driver-class-name: com.mysql.cj.jdbc.Driver
