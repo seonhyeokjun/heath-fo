@@ -38,4 +38,9 @@ out/
 
 application-oauth.yml
 
+### file ###
 /src/main/resources/static/files/
+
+### AWS ###
+/src/main/resources/application-real-db.yml
+/src/main/resources/application-real.yml
