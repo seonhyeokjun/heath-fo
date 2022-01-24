@@ -32,7 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/api/board/{\\d+}").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/board").permitAll()
                 .antMatchers("/", "/h2-console/**", "/auth/client", "/api/like/**", "/api/file/**",
-                        "/ws/chat", "/chat/rooms", "/api/google", "/api/naver").permitAll()
+                        "/ws/chat", "/chat/rooms", "/api/google", "/api/naver", "/profile").permitAll()
                 .antMatchers("/api/**", "/chat/**").hasRole(Role.USER.name())
                 .anyRequest().authenticated()
                 .and()

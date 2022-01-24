@@ -11,11 +11,6 @@ import java.util.Map;
 
 @Controller
 public class mainController {
-    @GetMapping("/")
-    public String index(){
-        return "redirect:http://localhost:3000";
-    }
-
     @GetMapping("/auth/client")
     @ResponseBody
     public Map<String, Object> client(@LoginUser SessionUser sessionUser){

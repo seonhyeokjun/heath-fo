@@ -41,6 +41,9 @@ application-oauth.yml
 ### file ###
 /src/main/resources/static/files/
 
+### Oauth ###
+/src/main/resources/application-oauth.yml
+
 ### AWS ###
 /src/main/resources/application-real-db.yml
 /src/main/resources/application-real.yml
