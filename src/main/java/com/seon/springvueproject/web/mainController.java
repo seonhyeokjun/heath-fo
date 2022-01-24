@@ -11,7 +11,6 @@ import java.util.Map;
 
 @Controller
 public class mainController {
-    // test
     @GetMapping("/auth/client")
     @ResponseBody
     public Map<String, Object> client(@LoginUser SessionUser sessionUser){
