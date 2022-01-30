@@ -15,17 +15,6 @@ public class BoardResponseDto {
     private LocalDateTime createdDate;
     private Integer hit;
 
-    @Builder
-    public BoardResponseDto(Long id, String title, String content, String author, LocalDateTime createdDate,
-                            Integer hit){
-        this.id = id;
-        this.title = title;
-        this.content = content;
-        this.author = author;
-        this.createdDate = createdDate;
-        this.hit = hit;
-    }
-
     public BoardResponseDto(Board entity){
         this.id = entity.getId();
         this.title = entity.getTitle();
