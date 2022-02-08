@@ -13,6 +13,8 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static javax.persistence.CascadeType.*;
+
 @Getter
 @NoArgsConstructor
 @Entity
@@ -37,7 +39,7 @@ public class Board extends BaseTimeEntity {
 
     @OneToMany(
             mappedBy = "board",
-            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
+            cascade = ALL,
             orphanRemoval = true
     )
     private List<FileLoad> files = new ArrayList<>();

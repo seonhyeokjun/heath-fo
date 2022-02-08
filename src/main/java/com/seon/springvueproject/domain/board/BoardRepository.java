@@ -11,12 +11,12 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface BoardRepository extends JpaRepository<Board, Long> {
-    @Query("SELECT p FROM Board p ORDER BY p.id DESC")
+    @Query("SELECT b FROM Board b ORDER BY b.id DESC")
     Page<BoardResponseDto> findAllDesc(Pageable pageable);
 
     List<Board> findByTitleContaining(String search);
 
     @Modifying
-    @Query("UPDATE Board p set p.hit = p.hit + 1 WHERE p.id = :id")
+    @Query("UPDATE Board b set b.hit = b.hit + 1 WHERE b.id = :id")
     void updateHit(@Param("id") Long id);
 }

@@ -28,7 +28,6 @@ import java.util.UUID;
 public class BoardService {
     private final BoardRepository boardRepository;
     private final HeartRepository heartRepository;
-    private final FileService fileService;
 
     /**
      * 게시물 저장

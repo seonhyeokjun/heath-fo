@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface FileRepository extends JpaRepository<FileLoad, Long> {
-    @Query("SELECT p FROM FileLoad p WHERE p.board.id = :id")
+    @Query("SELECT f FROM FileLoad f WHERE f.board.id = :id")
     List<FileLoad> findByBoardId(Long id);
 }
