@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class LoginController {
     @GetMapping("/google")
     public String googleLogin() {
-        return "redirect:http://ec2-3-38-60-229.ap-northeast-2.compute.amazonaws.com/oauth2/authorization/google";
+        return "redirect:/oauth2/authorization/google";
     }
 
     @GetMapping("/naver")
     public String naverLogin() {
-        return "redirect:http://ec2-3-38-60-229.ap-northeast-2.compute.amazonaws.com/oauth2/authorization/naver";
+        return "redirect:/oauth2/authorization/naver";
     }
 }
