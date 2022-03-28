@@ -11,6 +11,11 @@ import java.util.Map;
 
 @Controller
 public class mainController {
+    @GetMapping("/")
+    public String home(){
+        return "index";
+    }
+
     @GetMapping("/auth/client")
     @ResponseBody
     public Map<String, Object> client(@LoginUser SessionUser sessionUser){

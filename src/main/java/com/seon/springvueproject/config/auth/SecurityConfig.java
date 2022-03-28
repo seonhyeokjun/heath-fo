@@ -21,7 +21,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/configuration/security",
                 "/swagger-ui.html",
                 "/swagger-ui/**",
-                "/webjars/**");
+                "/webjars/**",
+                "/public/css/**",
+                "/public/js/**",
+                "/public/img/**",
+                "/public/lib/**");
     }
 
     @Override
@@ -29,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable().headers().frameOptions().disable().and().authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/api/board/{\\d+}").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/board").permitAll()
-                .antMatchers("/", "/h2-console/**", "/auth/client", "/api/like/**", "/api/file/**",
+                .antMatchers("/**", "/h2-console/**", "/auth/client", "/api/like/**", "/api/file/**",
                         "/ws/chat", "/chat/rooms", "/api/google", "/api/naver", "/profile").permitAll()
                 .antMatchers("/api/**", "/chat/**").hasRole(Role.USER.name())
                 .anyRequest().authenticated()
