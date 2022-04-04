@@ -47,3 +47,6 @@ application-oauth.yml
 ### AWS ###
 /src/main/resources/application-real-db.yml
 /src/main/resources/application-real.yml
+
+### NPM ###
+/src/main/resources/static/node_modules
