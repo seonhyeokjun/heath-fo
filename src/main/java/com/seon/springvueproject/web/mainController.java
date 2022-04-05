@@ -16,6 +16,11 @@ public class mainController {
         return "index";
     }
 
+    @GetMapping("/sign-up")
+    public String signUp() {
+        return "sign-up";
+    }
+
     @GetMapping("/auth/client")
     @ResponseBody
     public Map<String, Object> client(@LoginUser SessionUser sessionUser){
