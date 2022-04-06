@@ -16,22 +16,8 @@ public class mainController {
         return "index";
     }
 
-    @GetMapping("/sign-up")
-    public String signUp() {
-        return "sign-up";
-    }
-
-    @GetMapping("/auth/client")
-    @ResponseBody
-    public Map<String, Object> client(@LoginUser SessionUser sessionUser){
-        Map<String, Object> map = new HashMap<String, Object>();
-
-        if (sessionUser != null){
-            map.put("userName", sessionUser.getName());
-            map.put("userEmail", sessionUser.getEmail());
-            map.put("picture", sessionUser.getPicture());
-        }
-
-        return map;
+    @GetMapping("/side-bar")
+    public String sideBar() {
+        return "side-bar";
     }
 }

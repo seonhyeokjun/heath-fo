@@ -93,7 +93,7 @@ public class BoardService {
     public Page<BoardResponseDto> findAllDesc(){
         int size = boardRepository.findAll().size();
         if (size == 0) size = 1;
-        return boardRepository.findAllDesc(PageRequest.of(0, size));
+        return boardRepository.findAllDesc(PageRequest.of(0, 10));
     }
 
     /**
