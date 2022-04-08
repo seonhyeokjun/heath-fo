@@ -1,4 +1,4 @@
-package com.seon.springvueproject.web;
+package com.seon.springvueproject.web.board;
 
 import com.seon.springvueproject.config.auth.LoginUser;
 import com.seon.springvueproject.config.auth.dto.SessionUser;
