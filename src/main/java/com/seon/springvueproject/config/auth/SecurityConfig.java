@@ -1,17 +1,25 @@
 package com.seon.springvueproject.config.auth;
 
 import com.seon.springvueproject.domain.user.Role;
+import com.seon.springvueproject.service.user.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @RequiredArgsConstructor
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final CustomOAuth2UserService customOAuth2UserService;
+    private final UserService userService;
 
     @Override
     public void configure(WebSecurity web) throws Exception {
@@ -34,15 +42,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/api/board/{\\d+}").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/board").permitAll()
                 .antMatchers("/**", "/h2-console/**", "/auth/client", "/api/like/**", "/api/file/**",
-                        "/ws/chat", "/chat/rooms", "/api/google", "/api/naver", "/profile").permitAll()
+                        "/ws/chat", "/chat/rooms", "/api/google", "/api/naver", "/profile", "/login").permitAll()
                 .antMatchers("/api/**", "/chat/**").hasRole(Role.USER.name())
-                .anyRequest().authenticated()
-                .and()
-                    .logout()
-                        .logoutSuccessUrl("/")
-                .and()
-                    .oauth2Login()
-                        .userInfoEndpoint()
-                            .userService(customOAuth2UserService);
+                .anyRequest().authenticated();
+//                .and()
+//                    .oauth2Login()
+//                        .userInfoEndpoint()
+//                            .userService(customOAuth2UserService);
+
+        http.formLogin().loginPage("/").usernameParameter("email").loginProcessingUrl("/login").permitAll();
+
+        http.logout().logoutSuccessUrl("/");
+    }
+
+    @Override
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userService)
+                .passwordEncoder(new BCryptPasswordEncoder());
     }
 }
