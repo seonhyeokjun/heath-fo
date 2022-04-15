@@ -15,6 +15,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Arrays;
+
 @RequiredArgsConstructor
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -38,7 +40,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception{
-        http.csrf().disable().headers().frameOptions().disable().and().authorizeRequests()
+        http.csrf().disable()
+                .cors().configurationSource(corsConfigurationSource()).and()
+                .headers().frameOptions().disable().and().authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/api/board/{\\d+}").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/board").permitAll()
                 .antMatchers("/**", "/h2-console/**", "/auth/client", "/api/like/**", "/api/file/**",
@@ -50,7 +54,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                        .userInfoEndpoint()
 //                            .userService(customOAuth2UserService);
 
-        http.formLogin().loginPage("/").usernameParameter("email").loginProcessingUrl("/login").permitAll();
+        http.formLogin().loginPage("/").usernameParameter("email").loginProcessingUrl("/login")
+                .defaultSuccessUrl("http://localhost:3000/board").permitAll();
 
         http.logout().logoutSuccessUrl("/");
     }
@@ -59,5 +64,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userService)
                 .passwordEncoder(new BCryptPasswordEncoder());
+    }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.addAllowedOrigin("http://localhost:3000/board");
+        configuration.setAllowedMethods(Arrays.asList("GET","POST", "OPTIONS", "PUT","DELETE"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 }
