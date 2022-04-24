@@ -54,8 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                        .userInfoEndpoint()
 //                            .userService(customOAuth2UserService);
 
-        http.formLogin().loginPage("/").usernameParameter("email").loginProcessingUrl("/login")
-                .defaultSuccessUrl("http://localhost:3000/board").permitAll();
+        http.formLogin().loginPage("/").usernameParameter("email").loginProcessingUrl("/login").permitAll();
 
         http.logout().logoutSuccessUrl("/");
     }
@@ -69,7 +68,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("http://localhost:3000/board");
+        configuration.addAllowedOrigin("http://localhost:3000");
         configuration.setAllowedMethods(Arrays.asList("GET","POST", "OPTIONS", "PUT","DELETE"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
