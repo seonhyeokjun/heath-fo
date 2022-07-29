@@ -1,7 +1,7 @@
 package com.heath.bo.config.auth;
 
-import com.heath.bo.domain.user.User;
-import com.heath.bo.service.user.UserRepository;
+import com.heath.bo.user.domain.model.User;
+import com.heath.bo.user.domain.repository.UserRepository;
 import com.heath.bo.config.auth.dto.OAuthAttributes;
 import com.heath.bo.config.auth.dto.SessionUser;
 import lombok.RequiredArgsConstructor;

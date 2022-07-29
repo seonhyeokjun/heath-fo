@@ -1,7 +1,7 @@
 package com.heath.bo.config.auth;
 
-import com.heath.bo.domain.user.Role;
-import com.heath.bo.service.user.UserService;
+import com.heath.bo.user.domain.model.enums.Role;
+import com.heath.bo.user.domain.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;

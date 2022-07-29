@@ -1,7 +1,7 @@
 package com.heath.bo.config.auth.dto;
 
-import com.heath.bo.domain.user.Role;
-import com.heath.bo.domain.user.User;
+import com.heath.bo.user.domain.model.enums.Role;
+import com.heath.bo.user.domain.model.User;
 import lombok.Builder;
 import lombok.Getter;
 
