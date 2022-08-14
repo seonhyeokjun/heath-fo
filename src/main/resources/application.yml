@@ -12,4 +12,11 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/project?serverTimezone=Asia/Seoul
     username: root
-    password: sggs8822
+    password: ****
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    url: jdbc:mysql://localhost:3306/project?serverTimezone=Asia/Seoul
+    user: root
+    password: ****
